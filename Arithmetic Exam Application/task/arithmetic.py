@@ -55,7 +55,7 @@ def get_difficulty():
         choose_level = input()
         try:
             choose_level = int(choose_level)
-            assert (1 <= choose_level <= 2)
+            assert (1 <= choose_level <= len(levels))
             return choose_level
         except (AssertionError, ValueError):
             print("Incorrect format.")
@@ -105,15 +105,23 @@ def level_3():
     global score
     alg_dict = {
         "x": random.randint(5, 24),
-        "y":  random.randint(5, 24)
+        "y": random.randint(5, 24),
+        "z": random.randint(5, 24)
     }
-    question = random.choice(["x", "y"])
+    everydayimshuff = ["x", "y"]
+    random.shuffle(everydayimshuff)
+    guess = everydayimshuff[0]
+    clue = everydayimshuff[1]
     int_1 = alg_dict["y"] + alg_dict["x"]
     int_2 = alg_dict["y"] * alg_dict["x"]
+    int_3 = alg_dict["z"] - alg_dict[clue]
+    int_4 = alg_dict["z"] - alg_dict[guess]
     print(f"x + y = {int_1}")
-    print(f"x * y = {int_2}")
-    print(f"{question} = ")
-    return alg_dict[question]
+    print(f"y * x = {int_2}")
+    print(f"z - {clue} = {int_3}")
+    print(f"z - {guess} = {int_4}")
+    print(f"{guess} = ")
+    return alg_dict[guess]
 
 
 def level_4():
@@ -245,7 +253,6 @@ levels = {
     2: "integral squares of 11-29)",
     3: "algebra",
     4: "percentages",
-    5: "random"
     }
 
 score = 0
@@ -260,20 +267,18 @@ while playing:
     difficulty = get_difficulty()
     start_timer()
     for t in range(test_length):
-        if difficulty == 5:
-            random_difficulty = random.randint(1, 4)
-            if difficulty or random_difficulty == 1:
-                task = level_1()
-                get_response(task)
-            elif difficulty or random_difficulty == 2:
-                task = level_2()
-                get_response(task)
-            elif difficulty or random_difficulty == 3:
-                task = level_3()
-                get_response(task)
-            else:
-                task = level_4()
-                get_response(task)
+        if difficulty == 1:
+            task = level_1()
+            get_response(task)
+        elif difficulty == 2:
+            task = level_2()
+            get_response(task)
+        elif difficulty == 3 :
+            task = level_3()
+            get_response(task)
+        else:
+            task = level_4()
+            get_response(task)
     speed = time_passed(time_started)
     get_results(difficulty, test_length, score, speed)
     now_get_saved(difficulty, test_length, score, speed)
